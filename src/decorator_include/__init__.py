@@ -7,6 +7,22 @@ from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import RegexURLPattern, RegexURLResolver
 from django.utils.importlib import import_module
 
+#Fix for python3 compatibility, taken from https://github.com/oxplot/fysom/issues/1
+try:
+    unicode = unicode
+except NameError:
+    # 'unicode' is undefined, must be Python 3
+    str = str
+    unicode = str
+    bytes = bytes
+    basestring = (str,bytes)
+else:
+    # 'unicode' exists, must be Python 2
+    str = str
+    unicode = unicode
+    bytes = str
+    basestring = basestring
+
 class DecoratedPatterns(object):
     """
     A wrapper for an urlconf that applies a decorator to all its views.
